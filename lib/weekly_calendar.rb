@@ -24,9 +24,9 @@ module WeeklyCalendar
     date = options[:date] || Time.now
     start_date = Date.new(date.year, date.month, date.day) 
     end_date = Date.new(date.year, date.month, date.day) + 7
-    concat("<a href='?start_date=#{start_date - 7}?user_id='>« Previous Week</a> ")
+    concat("<a href='?start_date=#{start_date - 7}?user_id='>&laquo; Previous Week</a> ")
     concat("#{start_date.strftime("%B %d -")} #{end_date.strftime("%B %d")} #{start_date.year}")
-    concat(" <a href='?start_date=#{start_date + 7}?user_id='>Next Week »</a>")
+    concat(" <a href='?start_date=#{start_date + 7}?user_id='>Next Week &raquo;</a>")
   end
 
 end
