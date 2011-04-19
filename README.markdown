@@ -14,30 +14,22 @@ Live demo: http://scheduler.integratehq.com
 
 Install
 =======
-Rails 3
+Install the plugin (rails 3):
 
     rails plugin install git://github.com/dmix/weekly_builder.git 
-    
-Rails 2
-
-    script/plugin install git://github.com/dmix/weekly_builder.git 
-
-Then check the output if all images and stylesheets have been copied successfully.
 
 How to Use WeeklyBuilder
 =======
-The calendar builder:
+Add the calendar builder to your view (examples are in HAML):
 
-    <%  weekly_calendar(@events, :date => @date, :include_24_hours => true) do |w|  %>
-      <%  w.week(:business_hours => params[:business_hours], :clickable_hours => true) do |event,truncate|  %>
-        <%=  event.starts_at.strftime('%I:%M%p')  %>
-        <%=  link_to truncate(event.name,truncate), event_path(event)  %>
-      <% end -%>
-    <% end -%>
+    = weekly_calendar(@events, :date => @date, :include_24_hours => true) do |w|
+      = w.week(:business_hours => params[:business_hours], :clickable_hours => true) do |event,truncate|
+        =  event.starts_at.strftime('%I:%M%p')
+        =  link_to truncate(event.name,truncate), event_path(event)
 
 The Next/Previous week links helper:
 
-    <%  weekly_links(:date => @date)  %>
+    = weekly_links(:date => @date)
 
 In your controller:
 
@@ -49,22 +41,15 @@ The event model only requires 2 attributes: starts_at:datetime and ends_at:datet
 
 Include the weekly.css stylesheet:
 
-  <%= stylesheet_link_tag("weekly") %>
+    = stylesheet_link_tag("weekly")
 
 UPDATE: Added a truncate_width method so that long event names are truncated in proportion to the width of the event, this is passed through the week block with |truncate|.
 
 ### Options available:
 
-* `:include_24_hours`:
+* `:include_24_hours`
   Default hours are 6am-8pm, if this set as "true" then an option to switch to a 24-hour schedule appears at the bottom
 
-Copyright (c) 2009 Dan McGrady http://dmix.ca, released under the MIT license
+2011 Dan McGrady http://dmix.ca, released under the MIT license
 
 Thanks to P8 http://github.com/p8/table_builder/
-
-TODO
-=======
-* IE6 Friendly (so far only tested on FF3 + Safari 4)
-* Testing
-* Refactor concats to be nested
-* Single @date instead of @start_date + @end_date
