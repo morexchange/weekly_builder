@@ -10,13 +10,13 @@ class WeeklyCalendar::Builder
     concat(tag("div", :id => "days"))
       concat(content_tag("div", "Weekly View", :id => "placeholder"))
       for day in @start_date..@end_date        
-        concat(tag("div", :id => "day"))
+        concat(tag("div", :class => "day"))
         concat(content_tag("b", day.strftime('%A')))
         concat(tag("br"))
         concat(day.strftime('%B %d'))
         concat("</div>")
       end
-    concat("</div>")      
+    concat("</div>")
   end
   
   def week(options = {})    
@@ -40,7 +40,7 @@ class WeeklyCalendar::Builder
     concat(tag("div", :id => "hours"))
       concat(tag("div", :id => header_row))
         for hour in hours
-          header_box = "<b>#{hour}</b>"
+          header_box = "<b>#{hour}</b>".html_safe
           concat(content_tag("div", header_box, :id => "header_box"))
         end
       concat("</div>")
@@ -66,39 +66,39 @@ class WeeklyCalendar::Builder
   
   private
   
-    def concat(tag)
-      @template.concat(tag)
-    end
+  def concat(tag)
+    @template.safe_concat(tag)
+    ""
+  end
 
-    def left(starts_at,business_hours)
-      if business_hours == "true" or business_hours.blank?
-        minutes = starts_at.strftime('%M').to_f * 1.25
-        hour = starts_at.strftime('%H').to_f - 6
-      else
-        minutes = starts_at.strftime('%M').to_f * 1.25
-        hour = starts_at.strftime('%H').to_f
-      end
-      left = (hour * 75) + minutes
+  def left(starts_at,business_hours)
+    if business_hours == "true" or business_hours.blank?
+      minutes = starts_at.strftime('%M').to_f * 1.25
+      hour = starts_at.strftime('%H').to_f - 6
+    else
+      minutes = starts_at.strftime('%M').to_f * 1.25
+      hour = starts_at.strftime('%H').to_f
     end
+    left = (hour * 75) + minutes
+  end
 
-    def width(starts_at,ends_at)
-      #example 3:30 - 5:30
-      start_hours = starts_at.strftime('%H').to_i * 60 # 3 * 60 = 180
-      start_minutes = starts_at.strftime('%M').to_i + start_hours # 30 + 180 = 210
-      end_hours = ends_at.strftime('%H').to_i * 60 # 5 * 60 = 300
-      end_minutes = ends_at.strftime('%M').to_i + end_hours # 30 + 300 = 330
-      difference =  (end_minutes.to_i - start_minutes.to_i) * 1.25 # (330 - 180) = 150 * 1.25 = 187.5
-    
-      unless difference < 60
-        width = difference - 12
-      else
-        width = 63 #default width (75px minus padding+border)
-      end
-    end
+  def width(starts_at,ends_at)
+    #example 3:30 - 5:30
+    start_hours = starts_at.strftime('%H').to_i * 60 # 3 * 60 = 180
+    start_minutes = starts_at.strftime('%M').to_i + start_hours # 30 + 180 = 210
+    end_hours = ends_at.strftime('%H').to_i * 60 # 5 * 60 = 300
+    end_minutes = ends_at.strftime('%M').to_i + end_hours # 30 + 300 = 330
+    difference =  (end_minutes.to_i - start_minutes.to_i) * 1.25 # (330 - 180) = 150 * 1.25 = 187.5
   
-    def truncate_width(width)
-      hours = width / 63
-      truncate_width = 20 * hours
+    unless difference < 60
+      width = difference - 12
+    else
+      width = 63 #default width (75px minus padding+border)
     end
-    
+  end
+
+  def truncate_width(width)
+    hours = width / 63
+    truncate_width = 20 * hours
+  end 
 end

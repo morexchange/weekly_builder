@@ -14,10 +14,10 @@ Live demo: http://scheduler.integratehq.com
 
 Install
 =======
-Rails 3:
+Rails 3
     rails plugin install git://github.com/dmix/weekly_builder.git 
     
-Rails 2:
+Rails 2
     script/plugin install git://github.com/dmix/weekly_builder.git 
 
 Then check the output if all images and stylesheets have been copied successfully.
