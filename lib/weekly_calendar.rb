@@ -7,14 +7,14 @@ module WeeklyCalendar
     start_date = Date.new(date.year, date.month, date.day)
     end_date = Date.new(date.year, date.month, date.day) + 6
     
-    safe_concat(tag("div", :class => "week"))
+    concat(tag("div", :class => "week"))
 
       yield WeeklyCalendar::Builder.new(objects || [], self, options, start_date, end_date)
 
-    safe_concat("</div>")
+    concat("</div>".html_safe)
 
     if options[:include_24_hours] == true
-      safe_concat("<b><a href='?business_hours=true&start_date=#{start_date}'>Business Hours</a> | <a href='?business_hours=false&start_date=#{start_date}'>24-Hours</a></b>")
+      concat("<b><a href='?business_hours=true&start_date=#{start_date}'>Business Hours</a> | <a href='?business_hours=false&start_date=#{start_date}'>24-Hours</a></b>".html_safe)
     end
     ""
   end
@@ -24,8 +24,8 @@ module WeeklyCalendar
     date = options[:date] || Time.now
     start_date = Date.new(date.year, date.month, date.day) 
     end_date = Date.new(date.year, date.month, date.day) + 7
-    safe_concat("<a href='?start_date=#{start_date - 7}?user_id='>&laquo; Previous Week</a> ")
-    safe_concat("#{start_date.strftime("%B %d -")} #{end_date.strftime("%B %d")} #{start_date.year}")
-    safe_concat(" <a href='?start_date=#{start_date + 7}?user_id='>Next Week &raquo;</a>")
+    concat("<a href='?start_date=#{start_date - 7}?user_id='>&laquo; Previous Week</a> ".html_safe)
+    concat("#{start_date.strftime("%B %d -")} #{end_date.strftime("%B %d")} #{start_date.year}".html_safe)
+    concat(" <a href='?start_date=#{start_date + 7}?user_id='>Next Week &raquo;</a>".html_safe)
   end
 end

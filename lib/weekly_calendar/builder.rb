@@ -14,9 +14,9 @@ class WeeklyCalendar::Builder
         concat(content_tag("b", day.strftime('%A')))
         concat(tag("br"))
         concat(day.strftime('%B %d'))
-        concat("</div>")
+        concat("</div>".html_safe)
       end
-    concat("</div>")
+    concat("</div>".html_safe)
   end
   
   def week(options = {})    
@@ -43,7 +43,7 @@ class WeeklyCalendar::Builder
           header_box = "<b>#{hour}</b>".html_safe
           concat(content_tag("div", header_box, :class => "header_box"))
         end
-      concat("</div>")
+      concat("</div>".html_safe)
       
       concat(tag("div", :class => grid))
         for day in @start_date..@end_date 
@@ -51,23 +51,23 @@ class WeeklyCalendar::Builder
           for event in @objects
             if event.starts_at.strftime('%j').to_s == day.strftime('%j').to_s 
              if event.starts_at.strftime('%H').to_i >= start_hour and event.ends_at.strftime('%H').to_i <= end_hour
-                concat(tag("div", :class => "week_event", :style =>"left:#{left(event.starts_at,options[:business_hours])}px;width:#{width(event.starts_at,event.ends_at)}px;", :onclick => "location.href='/events/#{event.id}';"))
+                concat(tag("div", :class => "week_event", :style =>"left:#{left(event.starts_at,options[:business_hours])}px;width:#{width(event.starts_at,event.ends_at)}px;position:absolute", :onclick => "location.href='/events/#{event.id}';"))
                   truncate = truncate_width(width(event.starts_at,event.ends_at))
                   yield(event,truncate)
-                concat("</div>")
+                concat("</div>".html_safe)
               end
             end
           end
-          concat("</div>")
+          concat("</div>".html_safe)
         end
-      concat("</div>")
-    concat("</div>")
+      concat("</div>".html_safe)
+    concat("</div>".html_safe)
   end
   
   private
   
   def concat(tag)
-    @template.safe_concat(tag)
+    @template.concat(tag)
     ""
   end
 
